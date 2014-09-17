@@ -1,0 +1,48 @@
+# Contributor: T. Jameson Little <t.jameson.little@gmail.com>
+pkgname=dartium-bin
+pkgver=1.6.0
+pkgrel=1
+pkgdesc="Chromium-based browser that includes the Dart virtual machine (integration version built with dart-editor)"
+arch=(i686 x86_64)
+url="http://www.dartlang.org/dartium/"
+license=('BSD')
+depends=('libudev.so.0' 'libgcrypt15' 'gconf')
+optdepends=()
+makedepends=(unzip)
+provides=('dartium')
+conflicts=('dartium')
+replaces=()
+install=
+changelog=dartium.changelog
+noextract=()
+
+if [[ ${CARCH} = x86_64 ]]; then
+	source=("http://storage.googleapis.com/dart-archive/channels/stable/release/latest/dartium/dartium-linux-x64-release.zip"
+		"dartium-bin.desktop")
+	md5sums=('0caf48b01b7ba6cc2c737495f9f82dfb'
+		'82a256f51aab9293fb19b8c903c9d1d4')
+else
+	source=("http://storage.googleapis.com/dart-archive/channels/stable/release/latest/dartium/dartium-linux-ia32-release.zip"
+		"dartium-bin.desktop")
+	md5sums=('15b0fe039a21e0de756499b23af665be'
+		'82a256f51aab9293fb19b8c903c9d1d4')
+fi
+
+package(){
+	if [[ ${CARCH} = x86_64 ]]; then
+		_from=dartium-lucid64-full-stable-39553.0
+	else
+		_from=dartium-lucid32-full-stable-39553.0
+	fi
+
+	mkdir -p ${pkgdir}/opt ${pkgdir}/usr/bin ${pkgdir}/usr/share/pixmaps
+	find ${srcdir}/${_from} -perm -u+x -exec chmod +x '{}' +
+	find ${srcdir}/${_from} -perm -u+r -exec chmod +r '{}' +
+	find ${srcdir}/${_from} -perm -u+w -exec chmod +w '{}' +
+	cp -r ${srcdir}/${_from} ${pkgdir}/opt/${pkgname}
+
+	ln -s /opt/${pkgname}/chrome ${pkgdir}/usr/bin/dartium
+
+	install -D -m 0644 ${srcdir}/${_from}/product_logo_48.png "${pkgdir}/usr/share/pixmaps/${pkgname}.png"
+	install -D -m 0644 dartium-bin.desktop "${pkgdir}/usr/share/applications/dartium-bin.desktop"
+}
