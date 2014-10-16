@@ -2,7 +2,7 @@
 Name=Dartium
 Comment=Chromium-based browser that includes the Dart virtual machine
 Exec=dartium
-Icon=dartium-bin
+Icon=dartium
 Terminal=false
 Type=Application
 Categories=Development;
