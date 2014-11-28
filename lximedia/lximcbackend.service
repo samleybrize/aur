@@ -1,0 +1,11 @@
+[Unit]
+Description=LxiMedia server
+After=local-fs.target network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/lximcbackend --run
+User=lximediacenter
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,23 @@
+USER=lximediacenter
+
+post_install() {
+    # create user/group
+    if ! getent passwd $USER > /dev/null; then
+        useradd -U -s /usr/bin/false -d /var/lib/$USER $USER
+        mkdir /var/lib/$USER
+        chown $USER: /var/lib/$USER
+        chmod 700 /var/lib/$USER
+    fi
+}
+
+post_upgrade() {
+    post_install $1
+}
+
+post_remove() {
+    # del user/group
+    if getent passwd $USER > /dev/null; then
+        userdel -r $USER
+        groupdel $USER
+    fi
+}

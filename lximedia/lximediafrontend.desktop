@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=LXiMedia
+Comment=Share your media files using DLNA
+Exec=lximcfrontend
+Terminal=false
+Type=Application
+Icon=lximedia
+Categories=AudioVideo;

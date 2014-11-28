@@ -1,0 +1,37 @@
+# Maintainer: Samleybrize <stephen.berquet at gmail dot com>
+pkgname=lximedia
+pkgver=0.4.0
+pkgrel=1
+pkgdesc="A DLNA based transcoding media server"
+url="http://sourceforge.net/projects/lximedia/"
+arch=('x86_64' 'i686')
+license=('GPL3')
+depends=('libdvdnav' 'ffmpeg' 'smbclient' 'qt5-webkit' 'libexif')
+makedepends=('make')
+
+source=('http://downloads.sourceforge.net/project/lximedia/0.4.0/Source/lximedia_0.4.0-1.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Flximedia%2Ffiles%2F0.4.0%2FSource%2F&ts=1417173144&use_mirror=skylink'
+        'lximedia.svg'
+        'lximediafrontend.desktop'
+        'lximcbackend.service')
+sha256sums=('95a75f860a30564a6e6ed85bc3c10b5d6cd85887bf7c2ece67b87b3cf55a65e8'
+            '9d2aa7e95eb4b444c6f43ad9b09c3606241c90b527fd4f764e19cbb859e0e4d5'
+            '4dcd086bc31101c42de6b4d777d3d3680b4a1d23bbf4e7b11189f49c6b414695'
+            '8b24d053cee3a0d7d26f9ff63cd107e2fc67b295216f1d05b9d437661d00c269')
+
+install='lximedia.install'
+
+build() {
+    cd "$srcdir/$pkgname-$pkgver"
+    qmake
+    make
+}
+
+package() {
+    cd "$srcdir/$pkgname-$pkgver"
+    make INSTALL_ROOT="$pkgdir" install
+
+    install -Dm 0644 "${srcdir}/lximedia.svg" "${pkgdir}/usr/share/pixmaps/lximedia.svg"
+    install -Dm 0644 "${srcdir}/lximediafrontend.desktop" "${pkgdir}/usr/share/applications/lximediafrontend.desktop"
+    install -Dm 0644 "${srcdir}/lximcbackend.service" "${pkgdir}/usr/lib/systemd/system/lximcbackend.service"
+}
+
